@@ -4,7 +4,15 @@
 # NONE. You must do
 # colorssh host
 # everything else is in the .ssh/config file
-OPT=
+
+if [ -z "$1" ]
+then
+  echo Usage: colorssh hostname
+  echo see http://github.org/wd5gnr/colorssh
+  exit 9
+fi
+
+
 RESETESC="\\e[39;49m"
 FGblack="30"
 FGred="31"
@@ -61,8 +69,8 @@ END { exit 1 }
 				 ' ~/.ssh/config`
 				 
 
-FCOLOR=FG${FCOLOR}
-BCOLOR=BG${BCOLOR}
+FCOLOR=FG${FCOLOR:-default}
+BCOLOR=BG${BCOLOR:-defualt}
 echo -e \\e[${!FCOLOR}\;${!BCOLOR}m
 ssh "$1"
 RV=$?
