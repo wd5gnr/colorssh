@@ -1,0 +1,23 @@
+colorssh -- Al Williams al.williams@awce.com
+Public Domain
+
+A somewhat silly shell script. The idea is to set colors
+in your ssh config so you can have different screen colors
+for different hosts.
+
+Usage
+1) You need gawk on your path; other awk versions may work
+2) Edit ~/.ssh/config. Put all options for given host there
+   as you always do for ssh. Also add:
+   #FOREGROUND=white
+   #BACKGROUND=black
+   You can use any of the ANSI colors (white, black, green, blue,
+   yellow, purple, cyan, red) you can also use default.
+3) Issue ssh hostname -- where hostname is the entry you want in
+   .ssh/config. No other arguments are allowed.
+4) Things that change the color will not return your colors to the original.
+   Consider puting EXPORT TERM=xterm-mono in your startup files on hosts
+   you want to use this with.
+5) You could alias ssh to colorssh but don't forget that you can't pass any
+   options (including user name and password) using colorssh.
+

@@ -1,0 +1,72 @@
+#!/bin/bash
+# find host
+# As a concession, no options can be on the ssh command line
+# NONE. You must do
+# colorssh host
+# everything else is in the .ssh/config file
+OPT=
+RESETESC="\\e[39;49m"
+FGblack="30"
+FGred="31"
+FGgreen="32"
+FGyellow="33"
+FGblue="34"
+FGpurple="35"
+FGcyan="36"
+FGwhite="37"
+FGdefault="39"
+BGblack="40"
+BGred="41"
+BGgreen="42"
+BGyellow="43"
+BGblue="44"
+BGpurple="45"
+BGcyan="46"
+BGwhite="47"
+BGdefault="49"
+
+FCOLOR=`awk -v HOST="$1" '  
+BEGIN { found=0}
+/^[[:space:]]*Host[[:space:]]+/ { if (found) exit 1
+           if ($2==HOST) found=1
+                             }
+/#FOREGROUND=/ {    if (found) {
+                    sub("#FOREGROUND=","");
+		     print
+		     exit 0
+		     }
+		 }
+END { exit 1 }
+
+
+
+				 ' ~/.ssh/config`
+				 
+
+BCOLOR=`awk -v HOST="$1" '  
+BEGIN { found=0}
+/^[[:space:]]*Host[[:space:]]+/ { if (found) exit 1
+           if ($2==HOST) found=1
+                             }
+/#BACKGROUND=/ {    if (found) {
+                    sub("#BACKGROUND=","");
+		     print
+		     exit 0
+		     }
+		 }
+END { exit 1 }
+
+
+
+				 ' ~/.ssh/config`
+				 
+
+FCOLOR=FG${FCOLOR}
+BCOLOR=BG${BCOLOR}
+echo -e \\e[${!FCOLOR}\;${!BCOLOR}m
+ssh "$1"
+RV=$?
+echo -e $RESETESC
+exit $RV
+
+
